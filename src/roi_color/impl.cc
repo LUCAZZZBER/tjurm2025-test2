@@ -30,6 +30,44 @@ std::unordered_map<int, cv::Rect> roi_color(const cv::Mat& input) {
      */
     std::unordered_map<int, cv::Rect> res;
     // IMPLEMENT YOUR CODE HERE
+    // 1. 预处理
+    // 1.1 将输入的彩色图像转换为灰度图像
+    cv::Mat gray;
+    cv::cvtColor(input, gray, cv::COLOR_BGR2GRAY);
+
+    // 1.2 对灰度图像进行二值化处理
+    cv::Mat binary;
+    cv::threshold(gray, binary, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_OTSU);
+
+    // 2. 查找轮廓
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
+    cv::findContours(binary, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+    // 3. 计算矩形和颜色
+    for (const auto& contour : contours) {
+        // 3.1 计算外接矩形
+        cv::Rect bounding_rect = cv::boundingRect(contour);
+
+        // 3.2 提取 ROI 区域
+        cv::Mat roi = input(bounding_rect);
+
+        // 3.3 统计 ROI 区域的颜色
+        cv::Scalar mean_color = cv::mean(roi);
+
+        // 3.4 确定主要颜色
+        int color;
+        if (mean_color[0] > mean_color[1] && mean_color[0] > mean_color[2]) {
+            color = 0; // Blue
+        } else if (mean_color[1] > mean_color[0] && mean_color[1] > mean_color[2]) {
+            color = 1; // Green
+        } else {
+            color = 2; // Red
+        }
+
+        // 3.5 将颜色和矩形位置存入 map 中
+        res[color] = bounding_rect;
+    }
 
     return res;
 }

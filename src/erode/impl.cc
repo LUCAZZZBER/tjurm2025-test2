@@ -47,25 +47,17 @@ std::vector<cv::Mat> erode(const cv::Mat& src_erode, const cv::Mat& src_dilate) 
 
     // TODO: 在这里实现你的代码
 
-    // 1. 将彩色图片 src_erode 转换为灰度图像
     cv::cvtColor(src_erode, gray1, cv::COLOR_BGR2GRAY);
     cv::cvtColor(src_dilate, gray2, cv::COLOR_BGR2GRAY);
 
-    // 2. 将灰度图像进行二值化
     cv::threshold(gray1, binary1, 50, 255, cv::THRESH_BINARY);
     cv::threshold(gray2, binary2, 50, 255, cv::THRESH_BINARY);
 
-    // 3. 创建腐蚀和膨胀操作的核
-    // 注意：核的大小和形状可能需要根据实际图像进行调整
     cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7));
 
-    // 4. 对二值化后的图像进行腐蚀操作
     cv::erode(binary1, dst_erode, element, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
 
-    // 5. 对二值化后的图像进行膨胀操作
     cv::dilate(binary2, dst_dilate, element, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
-
-    // 返回腐蚀和膨胀后的图像
 
     return {dst_erode, dst_dilate};
 }

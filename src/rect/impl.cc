@@ -1,5 +1,4 @@
 #include "impls.h"
-#include <vector>
 
 std::pair<cv::Rect, cv::RotatedRect> get_rect_by_contours(const cv::Mat& input) {
     /**
@@ -26,13 +25,13 @@ std::pair<cv::Rect, cv::RotatedRect> get_rect_by_contours(const cv::Mat& input) 
     cv::RotatedRect bestRotatedRect;
     double maxArea = 0;
     
-    for (size_t i = 0; i < contours.size(); i++) {
-        std::vector<cv::Point> approx;
+    for (int i = 0; i < contours.size(); i++) {
+        std::vector<cv::Point> approx;//近似多边形
         cv::approxPolyDP(contours[i], approx, cv::arcLength(contours[i], true) * 0.02, true);
-        
+                                                 //0.02是精度，true是闭合
         if (approx.size() == 4) {
-            cv::Rect rect = cv::boundingRect(contours[i]);
-            cv::RotatedRect rotatedRect = cv::minAreaRect(contours[i]);
+            cv::Rect rect = cv::boundingRect(contours[i]);//外接矩形
+            cv::RotatedRect rotatedRect = cv::minAreaRect(contours[i]);//最小外接矩形
             
             double area = cv::contourArea(contours[i]);
             
@@ -40,7 +39,7 @@ std::pair<cv::Rect, cv::RotatedRect> get_rect_by_contours(const cv::Mat& input) 
                 maxArea = area;
                 bestRect = rect;
                 bestRotatedRect = rotatedRect;
-            }
+            }//找最大轮廓
         }
     }
     

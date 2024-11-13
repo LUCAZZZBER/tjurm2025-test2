@@ -1,6 +1,4 @@
 #include "impls.h"
-
-
 cv::Mat my_resize(const cv::Mat& input, float scale) {
     /**
      * 要求：
@@ -18,7 +16,7 @@ cv::Mat my_resize(const cv::Mat& input, float scale) {
    
 
     cv::Mat output = cv::Mat::zeros(new_rows, new_cols, input.type());
-
+                        //创建一个矩阵                   //数据类型和input相同
     for (int i = 0; i < new_rows; ++i) {
         for (int j = 0; j < new_cols; ++j) {
             float x = static_cast<float>(j) / scale;
@@ -29,7 +27,7 @@ cv::Mat my_resize(const cv::Mat& input, float scale) {
 
             if (x1 >= 0 && x1 < input.cols && y1 >= 0 && y1 < input.rows) {
                 output.at<cv::Vec3b>(i, j) = input.at<cv::Vec3b>(y1, x1);
-            }
+            }            //三个通道
         }
     }
 

@@ -13,17 +13,17 @@
          * 通过条件:
          * 运行测试点，通过即可。
          */
-    double contour_area = cv::contourArea(contour);
+    float contour_area = cv::contourArea(contour);// 轮廓面积
     
-    if (contour_area == 0) {
+    if (contour_area == 0) {//防止分母是零
         return 0.f;
     }
 
-    cv::RotatedRect min_rect = cv::minAreaRect(contour);
+    cv::RotatedRect min_rect = cv::minAreaRect(contour);// 获取最小外接矩形
 
-    float rect_area = min_rect.size.width * min_rect.size.height;
+    float rect_area = min_rect.size.width * min_rect.size.height;//求面积
 
-    float area_ratio = static_cast<float>(contour_area) / rect_area;
+    float area_ratio = contour_area / rect_area;//求比
 
     return area_ratio;
     

@@ -39,12 +39,12 @@ std::unordered_map<int, cv::Rect> roi_color(const cv::Mat& input) {
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(binary, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-    for (const auto& contour : contours) {
+    for (const auto& contour : contours)/*遍历轮廓*/ {
         cv::Rect bounding_rect = cv::boundingRect(contour);
 
         cv::Mat roi = input(bounding_rect);
 
-        cv::Scalar mean_color = cv::mean(roi);
+        cv::Scalar mean_color = cv::mean(roi);//三个通道的平均值    
 
         int color;
         if (mean_color[0] > mean_color[1] && mean_color[0] > mean_color[2]) {

@@ -43,20 +43,20 @@ std::vector<cv::Mat> erode(const cv::Mat& src_erode, const cv::Mat& src_dilate) 
      *     2. dilate 之后的图像中，图中的小脚被消除了(类似答案中的样子)
      *     以上两个检查点需要自己检查，满足条件 则输入 p 通过, 否则输入 f 表示不通过
      */
-    cv::Mat gray1,gray2, binary1,binary2, dst_erode, dst_dilate;
+    cv::Mat gray1,gray2, binary1,binary2, dst_erode, dst_dilate;//灰度，二值，腐蚀和膨胀
 
     // TODO: 在这里实现你的代码
 
-    cv::cvtColor(src_erode, gray1, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(src_erode, gray1, cv::COLOR_BGR2GRAY);//转换为灰度
     cv::cvtColor(src_dilate, gray2, cv::COLOR_BGR2GRAY);
 
-    cv::threshold(gray1, binary1, 50, 255, cv::THRESH_BINARY);
+    cv::threshold(gray1, binary1, 50, 255, cv::THRESH_BINARY);//二值
     cv::threshold(gray2, binary2, 50, 255, cv::THRESH_BINARY);
 
-    cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7));
+    cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7));//弄一个核
 
     cv::erode(binary1, dst_erode, element, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
-
+                                           //锚点在中心     //迭代1次   //边界用常数填充       //黑色填充       
     cv::dilate(binary2, dst_dilate, element, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
 
     return {dst_erode, dst_dilate};

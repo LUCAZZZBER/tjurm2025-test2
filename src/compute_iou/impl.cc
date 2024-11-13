@@ -18,21 +18,21 @@ float compute_iou(const cv::Rect& a, const cv::Rect& b) {
     */
     // IMPLEMENT YOUR CODE HERE
     int x1 = std::max(a.x, b.x);
-    int y1 = std::max(a.y, b.y);
+    int y1 = std::max(a.y, b.y);// 找左上角
     int x2 = std::min(a.x + a.width, b.x + b.width);
-    int y2 = std::min(a.y + a.height, b.y + b.height);
+    int y2 = std::min(a.y + a.height, b.y + b.height);// 找右下角
 
-    int intersection_width = std::max(0, x2 - x1);
+    int intersection_width = std::max(0, x2 - x1);// 出现负数说明没交上
     int intersection_height = std::max(0, y2 - y1);
 
-    int intersection_area = intersection_width * intersection_height;
+    int intersection_area = intersection_width * intersection_height;//交集面积
 
-    int area_a = a.width * a.height;
+    int area_a = a.width * a.height;//分别的面积
     int area_b = b.width * b.height;
 
-    int union_area = area_a + area_b - intersection_area;
+    int union_area = area_a + area_b - intersection_area;// 并集面积
 
-    float iou = static_cast<float>(intersection_area) / union_area;
+    float iou = static_cast<float>(intersection_area) / union_area;//比
 
     return iou;
 }

@@ -16,7 +16,7 @@ cv::Mat my_resize(const cv::Mat& input, float scale) {
    
 
     cv::Mat output = cv::Mat::zeros(new_rows, new_cols, input.type());
-                        //创建一个矩阵                   //数据类型和input相同
+                        //创建一个矩阵初值为零            //数据类型和input相同
     for (int i = 0; i < new_rows; ++i) {
         for (int j = 0; j < new_cols; ++j) {
             float x = static_cast<float>(j) / scale;

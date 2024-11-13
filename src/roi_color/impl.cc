@@ -43,18 +43,19 @@ std::unordered_map<int, cv::Rect> roi_color(const cv::Mat& input) {
         cv::Rect bounding_rect = cv::boundingRect(contours[i]);
 
         cv::Mat roi = input(bounding_rect);
-
-        cv::Scalar mean_color = cv::mean(roi);   
+        
+        cv::Scalar mean_color = cv::mean(roi);
 
         int color;
         if (mean_color[0] > mean_color[1] && mean_color[0] > mean_color[2]) {
             color = 0; 
-        } else if (mean_color[1] > mean_color[0] && mean_color[1] > mean_color[2]) {
-            color = 1; 
-        } else {
-            color = 2; 
         }
-
+        else if (mean_color[1] > mean_color[0] && mean_color[1] > mean_color[2]) {
+            color = 1;
+        }
+        else {
+            color = 2;
+        }
         res[color] = bounding_rect;
     }
 
